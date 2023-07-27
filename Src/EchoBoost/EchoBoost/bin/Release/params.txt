@@ -1,0 +1,6 @@
+// Handle to previous/next track
+False
+// Enable EchoBoost
+True
+//Capture device is first device
+False
