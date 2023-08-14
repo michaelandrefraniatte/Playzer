@@ -24,6 +24,12 @@ namespace Playzer
         {
             InitializeComponent();
         }
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        [DllImport("user32.dll")]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
         [DllImport("USER32.DLL")]
         public static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
         [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
@@ -148,6 +154,10 @@ namespace Playzer
                 file.ReadLine();
                 frequencystickscolor = file.ReadLine();
                 file.Close();
+            }
+            using (System.IO.StreamWriter createdfile = new System.IO.StreamWriter(Application.StartupPath + @"\temphandle"))
+            {
+                createdfile.WriteLine(this.Handle);
             }
         }
         private void CoreWebView2_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
@@ -520,15 +530,18 @@ namespace Playzer
         }
         private void MinimzedTray()
         {
-            this.WindowState = FormWindowState.Minimized;
-            this.ShowInTaskbar = false;
-            this.Hide();
+            ShowWindow(Process.GetCurrentProcess().MainWindowHandle, 0);
         }
         private void MaxmizedFromTray()
         {
-            this.WindowState = FormWindowState.Normal;
-            this.ShowInTaskbar = true;
-            this.Show();
+            if (File.Exists(Application.StartupPath + @"\temphandle"))
+                using (System.IO.StreamReader file = new System.IO.StreamReader(Application.StartupPath + @"\temphandle"))
+                {
+                    IntPtr handle = new IntPtr(int.Parse(file.ReadLine()));
+                    ShowWindow(handle, 9);
+                    IntPtr HWND = FindWindow(null, "Playzer");
+                    SetForegroundWindow(HWND);
+                }
         }
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
