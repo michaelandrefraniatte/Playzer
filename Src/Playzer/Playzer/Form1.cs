@@ -539,6 +539,7 @@ namespace Playzer
                 {
                     IntPtr handle = new IntPtr(int.Parse(file.ReadLine()));
                     ShowWindow(handle, 9);
+                    SetForegroundWindow(handle);
                     IntPtr HWND = FindWindow(null, "Playzer");
                     SetForegroundWindow(HWND);
                 }
