@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using WinformsVisualization.Visualization;
 using System.Text;
 using CSCore;
+using System.Threading;
 
 namespace Playzer
 {
@@ -24,6 +25,10 @@ namespace Playzer
         {
             InitializeComponent();
         }
+        [DllImport("user32.dll")]
+        internal static extern bool SendMessage(IntPtr hWnd, Int32 msg, Int32 wParam, Int32 lParam);
+        static Int32 WM_SYSCOMMAND = 0x0112;
+        static Int32 SC_RESTORE = 0xF120;
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
         [DllImport("user32.dll")]
@@ -157,7 +162,7 @@ namespace Playzer
             }
             using (System.IO.StreamWriter createdfile = new System.IO.StreamWriter(Application.StartupPath + @"\temphandle"))
             {
-                createdfile.WriteLine(this.Handle);
+                createdfile.WriteLine(Process.GetCurrentProcess().MainWindowHandle);
             }
         }
         private void CoreWebView2_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
@@ -344,12 +349,10 @@ namespace Playzer
         }
         private async void timer1_Tick(object sender, EventArgs e)
         {
-            if (this.WindowState != FormWindowState.Minimized)
+            try
             {
-                try
-                {
-                    ComputeData();
-                    string stringinject = @"
+                ComputeData();
+                string stringinject = @"
                         try {
                             var parentcanvas = document.getElementById('parentcanvas');
                             if (parentcanvas == null) {
@@ -410,12 +413,11 @@ namespace Playzer
                         }
                         document.getElementById('modal-close').click();
                     ";
-                    await execScriptHelper(stringinject.Replace("backgroundcolor", backgroundcolor).Replace("frequencystickscolor", frequencystickscolor).Replace("rawdata100", (int)barData[0] + ", " + (int)barData[1] + ", " + (int)barData[2] + ", " + (int)barData[3] + ", " + (int)barData[4] + ", " + (int)barData[5] + ", " + (int)barData[6] + ", " + (int)barData[7] + ", " + (int)barData[8] + ", " + (int)barData[9] + ", " + (int)barData[10] + ", " + (int)barData[11] + ", " + (int)barData[12] + ", " + (int)barData[13] + ", " + (int)barData[14] + ", " + (int)barData[15] + ", " + (int)barData[16] + ", " + (int)barData[17] + ", " + (int)barData[18] + ", " + (int)barData[19] + ", " + (int)barData[20] + ", " + (int)barData[21] + ", " + (int)barData[22] + ", " + (int)barData[23] + ", " + (int)barData[24] + ", " + (int)barData[25] + ", " + (int)barData[26] + ", " + (int)barData[27] + ", " + (int)barData[28] + ", " + (int)barData[29] + ", " + (int)barData[30] + ", " + (int)barData[31] + ", " + (int)barData[32] + ", " + (int)barData[33] + ", " + (int)barData[34] + ", " + (int)barData[35] + ", " + (int)barData[36] + ", " + (int)barData[37] + ", " + (int)barData[38] + ", " + (int)barData[39] + ", " + (int)barData[40] + ", " + (int)barData[41] + ", " + (int)barData[42] + ", " + (int)barData[43] + ", " + (int)barData[44] + ", " + (int)barData[45] + ", " + (int)barData[46] + ", " + (int)barData[47] + ", " + (int)barData[48] + ", " + (int)barData[49] + ", " + (int)barData[50] + ", " + (int)barData[51] + ", " + (int)barData[52] + ", " + (int)barData[53] + ", " + (int)barData[54] + ", " + (int)barData[55] + ", " + (int)barData[56] + ", " + (int)barData[57] + ", " + (int)barData[58] + ", " + (int)barData[59] + ", " + (int)barData[60] + ", " + (int)barData[61] + ", " + (int)barData[62] + ", " + (int)barData[63] + ", " + (int)barData[64] + ", " + (int)barData[65] + ", " + (int)barData[66] + ", " + (int)barData[67] + ", " + (int)barData[68] + ", " + (int)barData[69] + ", " + (int)barData[70] + ", " + (int)barData[71] + ", " + (int)barData[72] + ", " + (int)barData[73] + ", " + (int)barData[74] + ", " + (int)barData[75] + ", " + (int)barData[76] + ", " + (int)barData[77] + ", " + (int)barData[78] + ", " + (int)barData[79] + ", " + (int)barData[80] + ", " + (int)barData[81] + ", " + (int)barData[82] + ", " + (int)barData[83] + ", " + (int)barData[84] + ", " + (int)barData[85] + ", " + (int)barData[86] + ", " + (int)barData[87] + ", " + (int)barData[88] + ", " + (int)barData[89] + ", " + (int)barData[90] + ", " + (int)barData[91] + ", " + (int)barData[92] + ", " + (int)barData[93] + ", " + (int)barData[94] + ", " + (int)barData[95] + ", " + (int)barData[96] + ", " + (int)barData[97] + ", " + (int)barData[98] + ", " + (int)barData[99]));
-                }
-                catch { }
+                await execScriptHelper(stringinject.Replace("backgroundcolor", backgroundcolor).Replace("frequencystickscolor", frequencystickscolor).Replace("rawdata100", (int)barData[0] + ", " + (int)barData[1] + ", " + (int)barData[2] + ", " + (int)barData[3] + ", " + (int)barData[4] + ", " + (int)barData[5] + ", " + (int)barData[6] + ", " + (int)barData[7] + ", " + (int)barData[8] + ", " + (int)barData[9] + ", " + (int)barData[10] + ", " + (int)barData[11] + ", " + (int)barData[12] + ", " + (int)barData[13] + ", " + (int)barData[14] + ", " + (int)barData[15] + ", " + (int)barData[16] + ", " + (int)barData[17] + ", " + (int)barData[18] + ", " + (int)barData[19] + ", " + (int)barData[20] + ", " + (int)barData[21] + ", " + (int)barData[22] + ", " + (int)barData[23] + ", " + (int)barData[24] + ", " + (int)barData[25] + ", " + (int)barData[26] + ", " + (int)barData[27] + ", " + (int)barData[28] + ", " + (int)barData[29] + ", " + (int)barData[30] + ", " + (int)barData[31] + ", " + (int)barData[32] + ", " + (int)barData[33] + ", " + (int)barData[34] + ", " + (int)barData[35] + ", " + (int)barData[36] + ", " + (int)barData[37] + ", " + (int)barData[38] + ", " + (int)barData[39] + ", " + (int)barData[40] + ", " + (int)barData[41] + ", " + (int)barData[42] + ", " + (int)barData[43] + ", " + (int)barData[44] + ", " + (int)barData[45] + ", " + (int)barData[46] + ", " + (int)barData[47] + ", " + (int)barData[48] + ", " + (int)barData[49] + ", " + (int)barData[50] + ", " + (int)barData[51] + ", " + (int)barData[52] + ", " + (int)barData[53] + ", " + (int)barData[54] + ", " + (int)barData[55] + ", " + (int)barData[56] + ", " + (int)barData[57] + ", " + (int)barData[58] + ", " + (int)barData[59] + ", " + (int)barData[60] + ", " + (int)barData[61] + ", " + (int)barData[62] + ", " + (int)barData[63] + ", " + (int)barData[64] + ", " + (int)barData[65] + ", " + (int)barData[66] + ", " + (int)barData[67] + ", " + (int)barData[68] + ", " + (int)barData[69] + ", " + (int)barData[70] + ", " + (int)barData[71] + ", " + (int)barData[72] + ", " + (int)barData[73] + ", " + (int)barData[74] + ", " + (int)barData[75] + ", " + (int)barData[76] + ", " + (int)barData[77] + ", " + (int)barData[78] + ", " + (int)barData[79] + ", " + (int)barData[80] + ", " + (int)barData[81] + ", " + (int)barData[82] + ", " + (int)barData[83] + ", " + (int)barData[84] + ", " + (int)barData[85] + ", " + (int)barData[86] + ", " + (int)barData[87] + ", " + (int)barData[88] + ", " + (int)barData[89] + ", " + (int)barData[90] + ", " + (int)barData[91] + ", " + (int)barData[92] + ", " + (int)barData[93] + ", " + (int)barData[94] + ", " + (int)barData[95] + ", " + (int)barData[96] + ", " + (int)barData[97] + ", " + (int)barData[98] + ", " + (int)barData[99]));
             }
+            catch { }
             KeyboardHookProcessButtons();
-            if ((!this.ShowInTaskbar | this.WindowState == FormWindowState.Minimized) & handletopreviousnexttrack)
+            if (handletopreviousnexttrack)
             {
                 valchanged(0, Key_MEDIA_PLAY_PAUSE);
                 if (wu[0] == 1)
@@ -540,13 +542,12 @@ namespace Playzer
                     IntPtr handle = new IntPtr(int.Parse(file.ReadLine()));
                     ShowWindow(handle, 9);
                     SetForegroundWindow(handle);
-                    IntPtr HWND = FindWindow(null, "Playzer");
-                    SetForegroundWindow(HWND);
+                    Microsoft.VisualBasic.Interaction.AppActivate("Playzer");
                 }
         }
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
-            MaxmizedFromTray();
+            Task.Run(() => MaxmizedFromTray());
         }
         private static string GetActiveWindowTitle()
         {

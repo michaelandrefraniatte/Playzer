@@ -17,10 +17,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using WinformsVisualization.Visualization;
 using System.Text;
+using System.Threading;
+using System.Reflection;
+
 namespace Playzer
 {
     public static class Program
     {
+        [DllImport("user32.dll")]
+        internal static extern bool SendMessage(IntPtr hWnd, Int32 msg, Int32 wParam, Int32 lParam);
+        static Int32 WM_SYSCOMMAND = 0x0112;
+        static Int32 SC_RESTORE = 0xF120;
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
         [DllImport("user32.dll")]
@@ -41,8 +48,7 @@ namespace Playzer
                         IntPtr handle = new IntPtr(int.Parse(file.ReadLine()));
                         ShowWindow(handle, 9);
                         SetForegroundWindow(handle);
-                        IntPtr HWND = FindWindow(null, "Playzer");
-                        SetForegroundWindow(HWND);
+                        Microsoft.VisualBasic.Interaction.AppActivate("Playzer");
                     }
                 return;
             }
