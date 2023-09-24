@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 using WinformsVisualization.Visualization;
 using System.Text;
 using CSCore;
-using System.Threading;
 
 namespace Playzer
 {
