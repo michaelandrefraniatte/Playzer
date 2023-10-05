@@ -1,3 +1,1 @@
-﻿https://michaelandrefraniatte.github.io/Playzer  
-  
-https://github.com/michaelandrefraniatte  
+﻿https://github.com/michaelandrefraniatte
