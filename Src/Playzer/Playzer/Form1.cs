@@ -148,6 +148,7 @@ namespace Playzer
                 webView21.Source = new Uri(file.ReadLine());
             }
             webView21.Dock = DockStyle.Fill;
+            webView21.DefaultBackgroundColor = Color.Transparent;
             webView21.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
             webView21.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
             this.Controls.Add(webView21);
