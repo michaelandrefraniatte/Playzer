@@ -92,6 +92,7 @@ namespace Playzer
         public KeyboardHook keyboardHook = new KeyboardHook();
         public static int vkCode, scanCode;
         public static bool KeyboardHookButtonDown, KeyboardHookButtonUp;
+        public static bool starting = true;
         public static int[] wd = { 2, 2, 2, 2 };
         public static int[] wu = { 2, 2, 2, 2 };
         public static void valchanged(int n, bool val)
@@ -137,6 +138,8 @@ namespace Playzer
             y = this.Location.Y;
             cx = this.Size.Width;
             cy = this.Size.Height;
+            this.label1.Location = new Point(cx / 2 - this.label1.Size.Width / 2, cy / 2 - this.label1.Height / 2 - this.label2.Height);
+            this.label2.Location = new Point(cx / 2 - this.label2.Size.Width / 2, cy / 2 - this.label2.Height / 2 + this.label2.Height);
             CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions("--disable-gpu", "--disable-gpu-compositing");
             CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, null, options);
             await webView21.EnsureCoreWebView2Async(environment); 
@@ -148,7 +151,8 @@ namespace Playzer
                 webView21.Source = new Uri(file.ReadLine());
             }
             webView21.Dock = DockStyle.Fill;
-            webView21.DefaultBackgroundColor = Color.Transparent;
+            webView21.NavigationCompleted += WebView21_NavigationCompleted;
+            webView21.DefaultBackgroundColor = Color.Black;
             webView21.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
             webView21.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
             this.Controls.Add(webView21);
@@ -163,6 +167,16 @@ namespace Playzer
             using (System.IO.StreamWriter createdfile = new System.IO.StreamWriter(Application.StartupPath + @"\temphandle"))
             {
                 createdfile.WriteLine(Process.GetCurrentProcess().MainWindowHandle);
+            }
+        }
+        private void WebView21_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
+        {
+            if (starting)
+            {
+                this.Controls.Remove(label1);
+                this.Controls.Remove(label2);
+                this.Controls.Remove(label3);
+                starting = false;
             }
         }
         private void CoreWebView2_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
