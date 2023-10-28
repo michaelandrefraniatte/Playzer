@@ -1,0 +1,6 @@
+C:\Users\micha\Documents\github\Playcipe\Src\Playcipe\Valuechanges\bin\Release\Valuechanges.dll
+C:\Users\micha\Documents\github\Playcipe\Src\Playcipe\Valuechanges\bin\Release\Valuechanges.pdb
+C:\Users\micha\Documents\github\Playcipe\Src\Playcipe\Valuechanges\obj\Release\Valuechanges.csproj.AssemblyReference.cache
+C:\Users\micha\Documents\github\Playcipe\Src\Playcipe\Valuechanges\obj\Release\Valuechanges.csproj.CoreCompileInputs.cache
+C:\Users\micha\Documents\github\Playcipe\Src\Playcipe\Valuechanges\obj\Release\Valuechanges.dll
+C:\Users\micha\Documents\github\Playcipe\Src\Playcipe\Valuechanges\obj\Release\Valuechanges.pdb

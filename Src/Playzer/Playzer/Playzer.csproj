@@ -108,6 +108,12 @@
     <Content Include="playzer.ico" />
     <None Include="playzer.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Valuechanges\Valuechanges.csproj">
+      <Project>{db9abcbd-86be-4b7e-9d21-0ec96e47506c}</Project>
+      <Name>Valuechanges</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Web.WebView2.1.0.2045.28\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.2045.28\build\Microsoft.Web.WebView2.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

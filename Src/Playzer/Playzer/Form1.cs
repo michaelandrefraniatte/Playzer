@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using WinformsVisualization.Visualization;
 using System.Text;
 using CSCore;
+using Valuechanges;
 
 namespace Playzer
 {
@@ -24,6 +25,12 @@ namespace Playzer
         {
             InitializeComponent();
         }
+        private const int APPCOMMAND_VOLUME_MUTE = 0x80000;
+        private const int APPCOMMAND_VOLUME_UP = 0xA0000;
+        private const int APPCOMMAND_VOLUME_DOWN = 0x90000;
+        private const int WM_APPCOMMAND = 0x319;
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessageW(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
         [DllImport("user32.dll")]
         internal static extern bool SendMessage(IntPtr hWnd, Int32 msg, Int32 wParam, Int32 lParam);
         static Int32 WM_SYSCOMMAND = 0x0112;
@@ -92,7 +99,9 @@ namespace Playzer
         public KeyboardHook keyboardHook = new KeyboardHook();
         public static int vkCode, scanCode;
         public static bool KeyboardHookButtonDown, KeyboardHookButtonUp;
+        private static IntPtr hwnd;
         public static bool starting = true;
+        public static Valuechange ValueChange = new Valuechange();
         public static int[] wd = { 2, 2, 2, 2 };
         public static int[] wu = { 2, 2, 2, 2 };
         public static void valchanged(int n, bool val)
@@ -130,7 +139,7 @@ namespace Playzer
             this.pictureBox1.Location = new Point(cx / 2 - this.pictureBox1.Size.Width / 2, cy * 1 / 4);
             this.progressBar1.Location = new Point(cx / 2 - this.progressBar1.Size.Width / 2, cy * 2 / 3);
             Task.Run(() => Loader());
-            CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions("--disable-gpu", "--disable-gpu-compositing");
+            CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions("--disable-web-security", "--autoplay-policy=no-user-gesture-required");
             CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, null, options);
             await webView21.EnsureCoreWebView2Async(environment);
             webView21.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
@@ -143,6 +152,7 @@ namespace Playzer
             webView21.Dock = DockStyle.Fill;
             webView21.NavigationCompleted += WebView21_NavigationCompleted;
             webView21.DefaultBackgroundColor = Color.Black;
+            webView21.CoreWebView2.AddHostObjectToScript("bridge", new Bridge());
             webView21.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
             webView21.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
             this.Controls.Add(webView21);
@@ -168,6 +178,7 @@ namespace Playzer
             if (echoboostenable)
                 Process.Start("EchoBoost.exe");
             Task.Run(() => GetAudioByteArray());
+            hwnd = this.Handle;
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -438,23 +449,52 @@ namespace Playzer
                             ctx.stroke();
                         }
                         catch {}
-                        var elements = document.getElementsByClassName('ads');
-                        for (var i = 0; i < elements.length; i++) {
-                            elements[i].style.display = 'none';
+                        try {
+                            var elements = document.getElementsByClassName('ads');
+                            for (var i = 0; i < elements.length; i++) {
+                                elements[i].style.display = 'none';
+                            }
                         }
-                        var els = document.getElementsByClassName('conversion-banner');
-                        for (var i = 0; i < els.length; i++) {
-                            els[i].style.display = 'none';
+                        catch { }
+                        try {
+                            var els = document.getElementsByClassName('conversion-banner');
+                            for (var i = 0; i < els.length; i++) {
+                                els[i].style.display = 'none';
+                            }
                         }
-                        var elts = document.querySelectorAll('.ads-top');
-                        for (var i = 0; i < elts.length; i++) {
-                            elts[i].style.display = 'none';
+                        catch { }
+                        try {
+                            var elts = document.querySelectorAll('.ads-top');
+                            for (var i = 0; i < elts.length; i++) {
+                                elts[i].style.display = 'none';
+                            }
                         }
-                        var ets = document.querySelectorAll('.ads-bottom-alone');
-                        for (var i = 0; i < ets.length; i++) {
-                            ets[i].style.display = 'none';
+                        catch { }
+                        try {
+                            var ets = document.querySelectorAll('.ads-bottom-alone');
+                            for (var i = 0; i < ets.length; i++) {
+                                ets[i].style.display = 'none';
+                            }
                         }
-                        document.getElementById('modal-close').click();
+                        catch { }
+                        try {
+                            document.getElementById('modal-close').click();
+                        }
+                        catch { }
+                        try {
+                            const bridge = chrome.webview.hostObjects.bridge;
+                            var mute = document.getElementsByClassName('track-link');
+                            for (var i = 0; i < mute.length; i++) {
+                                var advertising = mute[i].innerText;
+                                if (advertising == 'Advertising') {
+                                    bridge.CutSound('1');
+                                }
+                                else {
+                                    bridge.CutSound('0');
+                                }
+                            }
+                        }
+                        catch { }
                     ";
                 await execScriptHelper(stringinject.Replace("backgroundcolor", backgroundcolor).Replace("frequencystickscolor", frequencystickscolor).Replace("rawdata100", (int)barData[0] + ", " + (int)barData[1] + ", " + (int)barData[2] + ", " + (int)barData[3] + ", " + (int)barData[4] + ", " + (int)barData[5] + ", " + (int)barData[6] + ", " + (int)barData[7] + ", " + (int)barData[8] + ", " + (int)barData[9] + ", " + (int)barData[10] + ", " + (int)barData[11] + ", " + (int)barData[12] + ", " + (int)barData[13] + ", " + (int)barData[14] + ", " + (int)barData[15] + ", " + (int)barData[16] + ", " + (int)barData[17] + ", " + (int)barData[18] + ", " + (int)barData[19] + ", " + (int)barData[20] + ", " + (int)barData[21] + ", " + (int)barData[22] + ", " + (int)barData[23] + ", " + (int)barData[24] + ", " + (int)barData[25] + ", " + (int)barData[26] + ", " + (int)barData[27] + ", " + (int)barData[28] + ", " + (int)barData[29] + ", " + (int)barData[30] + ", " + (int)barData[31] + ", " + (int)barData[32] + ", " + (int)barData[33] + ", " + (int)barData[34] + ", " + (int)barData[35] + ", " + (int)barData[36] + ", " + (int)barData[37] + ", " + (int)barData[38] + ", " + (int)barData[39] + ", " + (int)barData[40] + ", " + (int)barData[41] + ", " + (int)barData[42] + ", " + (int)barData[43] + ", " + (int)barData[44] + ", " + (int)barData[45] + ", " + (int)barData[46] + ", " + (int)barData[47] + ", " + (int)barData[48] + ", " + (int)barData[49] + ", " + (int)barData[50] + ", " + (int)barData[51] + ", " + (int)barData[52] + ", " + (int)barData[53] + ", " + (int)barData[54] + ", " + (int)barData[55] + ", " + (int)barData[56] + ", " + (int)barData[57] + ", " + (int)barData[58] + ", " + (int)barData[59] + ", " + (int)barData[60] + ", " + (int)barData[61] + ", " + (int)barData[62] + ", " + (int)barData[63] + ", " + (int)barData[64] + ", " + (int)barData[65] + ", " + (int)barData[66] + ", " + (int)barData[67] + ", " + (int)barData[68] + ", " + (int)barData[69] + ", " + (int)barData[70] + ", " + (int)barData[71] + ", " + (int)barData[72] + ", " + (int)barData[73] + ", " + (int)barData[74] + ", " + (int)barData[75] + ", " + (int)barData[76] + ", " + (int)barData[77] + ", " + (int)barData[78] + ", " + (int)barData[79] + ", " + (int)barData[80] + ", " + (int)barData[81] + ", " + (int)barData[82] + ", " + (int)barData[83] + ", " + (int)barData[84] + ", " + (int)barData[85] + ", " + (int)barData[86] + ", " + (int)barData[87] + ", " + (int)barData[88] + ", " + (int)barData[89] + ", " + (int)barData[90] + ", " + (int)barData[91] + ", " + (int)barData[92] + ", " + (int)barData[93] + ", " + (int)barData[94] + ", " + (int)barData[95] + ", " + (int)barData[96] + ", " + (int)barData[97] + ", " + (int)barData[98] + ", " + (int)barData[99]));
             }
@@ -602,6 +642,31 @@ namespace Playzer
                 return Buff.ToString();
             }
             return null;
+        }
+        public static void Mute()
+        {
+            SendMessageW(hwnd, WM_APPCOMMAND, hwnd, (IntPtr)APPCOMMAND_VOLUME_MUTE);
+        }
+        public static void VolDown()
+        {
+            SendMessageW(hwnd, WM_APPCOMMAND, hwnd, (IntPtr)APPCOMMAND_VOLUME_DOWN);
+        }
+        public static void VolUp()
+        {
+            SendMessageW(hwnd, WM_APPCOMMAND, hwnd, (IntPtr)APPCOMMAND_VOLUME_UP);
+        }
+        public async static void CutSound(double param)
+        {
+            ValueChange[0] = param;
+            if (Valuechange._ValueChange[0] > 0f)
+            {
+                Mute();
+            }
+            if (Valuechange._ValueChange[0] < 0f)
+            {
+                VolDown();
+                VolUp();
+            }
         }
         private async void KeyboardHook_Hook(KeyboardHook.KBDLLHOOKSTRUCT keyboardStruct) { }
         public const int VK_LBUTTON = (int)0x01;
@@ -1930,6 +1995,16 @@ namespace Playzer
         public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern IntPtr GetModuleHandle(string lpModuleName);
+    }
+    [ClassInterface(ClassInterfaceType.AutoDual)]
+    [ComVisible(true)]
+    public class Bridge
+    {
+        public string CutSound(string param)
+        {
+            Form1.CutSound(Convert.ToSingle(param));
+            return param;
+        }
     }
 }
 namespace WinformsVisualization.Visualization
