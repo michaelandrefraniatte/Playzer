@@ -482,6 +482,19 @@ namespace Playzer
                         }
                         catch { }
                         try {
+                            document.getElementById('modal_push_premium').style.display = 'none';
+                        }
+                        catch { }
+                        try {
+                            var bts = document.querySelectorAll('button');
+                            for (var i = 0; i < bts.length; i++) {
+                                if (bts[i].ariaLabel == 'Close') {
+                                    bts[i].click();
+                                }
+                            }
+                        }
+                        catch { }
+                        try {
                             const bridge = chrome.webview.hostObjects.bridge;
                             var mute = document.getElementsByClassName('track-link');
                             for (var i = 0; i < mute.length; i++) {
