@@ -495,8 +495,31 @@ namespace Playzer
                         }
                         catch { }
                         try {
+                            var subs = document.querySelectorAll('.chakra-stack');
+                            for (var i = 0; i < subs.length; i++) {
+                                if (subs[i].dataset.testid == 'conversionBanner') {
+                                    subs[i].style.display = 'none';
+                                }
+                            }
+                        }
+                        catch { }
+                        try {
                             const bridge = chrome.webview.hostObjects.bridge;
                             var mute = document.getElementsByClassName('track-link');
+                            for (var i = 0; i < mute.length; i++) {
+                                var advertising = mute[i].innerText;
+                                if (advertising == 'Advertising') {
+                                    bridge.CutSound('1');
+                                }
+                                else {
+                                    bridge.CutSound('0');
+                                }
+                            }
+                        }
+                        catch { }
+                        try {
+                            const bridge = chrome.webview.hostObjects.bridge;
+                            var mute = document.querySelectorAll('.chakra-text a');
                             for (var i = 0; i < mute.length; i++) {
                                 var advertising = mute[i].innerText;
                                 if (advertising == 'Advertising') {
