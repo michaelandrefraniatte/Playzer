@@ -100,7 +100,7 @@ namespace Playzer
         public static int vkCode, scanCode;
         public static bool KeyboardHookButtonDown, KeyboardHookButtonUp;
         private static IntPtr hwnd;
-        public static bool starting = true;
+        public static bool starting = true, cutsound = false;
         public static Valuechange ValueChange = new Valuechange();
         public static int[] wd = { 2, 2, 2, 2 };
         public static int[] wu = { 2, 2, 2, 2 };
@@ -629,6 +629,11 @@ namespace Playzer
                 if (proc.Length > 0 & Process.GetProcessesByName("Playtov").Length == 0 & Process.GetProcessesByName("Playcipe").Length == 0 & Process.GetProcessesByName("Playtube").Length == 0)
                     proc[0].Kill();
             }
+            if (cutsound)
+            {
+                VolDown();
+                VolUp();
+            }
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -696,10 +701,12 @@ namespace Playzer
             ValueChange[0] = param;
             if (Valuechange._ValueChange[0] > 0f)
             {
+                cutsound = true;
                 Mute();
             }
             if (Valuechange._ValueChange[0] < 0f)
             {
+                cutsound = false;
                 VolDown();
                 VolUp();
             }
