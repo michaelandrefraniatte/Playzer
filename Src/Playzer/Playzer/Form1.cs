@@ -507,7 +507,7 @@ namespace Playzer
                             var icons = document.querySelectorAll('.chakra-icon');
                             for (var i = 0; i < icons.length; i++) {
                                 if (icons[i].dataset.testid == 'HeartMediumFilledIcon') {
-                                    icons[i].style.color = '#b560ff';
+                                    icons[i].style.color = '#fdfcfe';
                                     icons[i].parentElement.style.backgroundColor = '#a238ff';
                                 }
                             }
