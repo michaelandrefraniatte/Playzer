@@ -504,6 +504,16 @@ namespace Playzer
                         }
                         catch { }
                         try {
+                            var icons = document.querySelectorAll('.chakra-icon');
+                            for (var i = 0; i < icons.length; i++) {
+                                if (icons[i].dataset.testid == 'HeartMediumFilledIcon') {
+                                    icons[i].style.color = '#b560ff';
+                                    icons[i].parentElement.style.backgroundColor = '#a238ff';
+                                }
+                            }
+                        }
+                        catch { }
+                        try {
                             const bridge = chrome.webview.hostObjects.bridge;
                             var mute = document.getElementsByClassName('track-link');
                             for (var i = 0; i < mute.length; i++) {
