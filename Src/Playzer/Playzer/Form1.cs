@@ -251,10 +251,12 @@ namespace Playzer
             newItem = webView21.CoreWebView2.Environment.CreateContextMenuItem("Go to menu", null, CoreWebView2ContextMenuItemKind.Command);
             newItem.CustomItemSelected += delegate (object send, Object ex)
             {
-                string filepath = @"file:///" + System.Reflection.Assembly.GetEntryAssembly().Location.Replace("\\", "/").Replace("Playcipe.exe", "") + "assets/index.html";
                 System.Threading.SynchronizationContext.Current.Post((_) =>
                 {
-                    webView21.Source = new System.Uri(filepath);
+                    using (StreamReader file = new StreamReader("playzer.txt"))
+                    {
+                        webView21.Source = new Uri(file.ReadLine());
+                    }
                 }, null);
             };
             menuList.Insert(menuList.Count, newItem);
