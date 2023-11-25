@@ -413,7 +413,7 @@ namespace Playzer
                             var parentcanvas = document.getElementById('parentcanvas');
                             if (parentcanvas == null) {
                                 parentcanvas = document.createElement('div');
-                                document.body.insertBefore(parentcanvas, document.body.firstChild);
+                                document.getElementById('page_profile').insertBefore(parentcanvas, document.getElementById('page_profile').firstChild);
                                 parentcanvas.id = 'parentcanvas';
                             }
                             parentcanvas.style.position = 'relative';
