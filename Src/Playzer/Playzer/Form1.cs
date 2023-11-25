@@ -413,14 +413,14 @@ namespace Playzer
                             var parentcanvas = document.getElementById('parentcanvas');
                             if (parentcanvas == null) {
                                 parentcanvas = document.createElement('div');
-                                document.getElementById('page_profile').insertBefore(parentcanvas, document.getElementById('page_profile').firstChild);
+                                document.getElementById('page_topbar').after(parentcanvas);
                                 parentcanvas.id = 'parentcanvas';
                             }
                             parentcanvas.style.position = 'relative';
                             parentcanvas.style.display = 'inline-block';
-                            parentcanvas.style.width = '100%';
+                            parentcanvas.style.width = 'calc(100% - var(--layout-sidebar-width))';
                             parentcanvas.style.height = '200px';
-                            parentcanvas.style.left = '0px';
+                            parentcanvas.style.left = 'var(--layout-sidebar-width)';
                             parentcanvas.style.top = '0px';
                             parentcanvas.style.backgroundColor = 'backgroundcolor';
                             var canvas = document.getElementsByTagName('canvas');
