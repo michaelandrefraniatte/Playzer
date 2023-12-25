@@ -522,7 +522,7 @@ namespace Playzer
                             var mute = document.getElementsByClassName('track-link');
                             for (var i = 0; i < mute.length; i++) {
                                 var advertising = mute[i].innerText;
-                                if (advertising == 'Advertising') {
+                                if (advertising == 'Advertising' | advertising == 'En savoir plus') {
                                     bridge.CutSound('1');
                                 }
                                 else {
@@ -536,7 +536,7 @@ namespace Playzer
                             var mute = document.querySelectorAll('.chakra-text a');
                             for (var i = 0; i < mute.length; i++) {
                                 var advertising = mute[i].innerText;
-                                if (advertising == 'Advertising') {
+                                if (advertising == 'Advertising' | advertising == 'En savoir plus') {
                                     bridge.CutSound('1');
                                 }
                                 else {
