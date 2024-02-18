@@ -118,7 +118,7 @@
             Create a <see cref="T:Microsoft.Web.WebView2.Core.CoreWebView2ControllerOptions"/> using the current values of this instance's properties.
             </summary>
             <returns>A <see cref="T:Microsoft.Web.WebView2.Core.CoreWebView2ControllerOptions"/> object or null if no controller-related properties are set.</returns>
-            <exception cref="!:NullReferenceException">Thrown if the parameter environment is null.</exception>
+            <exception cref="T:System.NullReferenceException">Thrown if the parameter environment is null.</exception>
         </member>
         <member name="T:Microsoft.Web.WebView2.Wpf.ImplicitInitGate">
             <summary>
@@ -212,8 +212,8 @@
              A control to embed web content in a WPF application.
              </summary>
              <remarks>
-             This control is effectively a wrapper around the [WebView2 COM
-             API](https://aka.ms/webview2). You can directly access the underlying
+             This control is effectively a wrapper around the [WebView2 COM API](https://aka.ms/webview2).
+             You can directly access the underlying
              ICoreWebView2 interface and all of its functionality by accessing the
              <see cref="P:Microsoft.Web.WebView2.Wpf.WebView2.CoreWebView2"/> property. Some of the most common COM
              functionality is also accessible directly through wrapper
@@ -302,8 +302,7 @@
              implications regarding the control's input and output behavior as well as
              the functionality it "inherits" from <see cref="T:System.Windows.UIElement"/> and <see
              cref="T:System.Windows.FrameworkElement"/>.
-             See the <see cref="T:System.Windows.Interop.HwndHost"/> and [WPF/Win32
-             interop](https://docs.microsoft.com/dotnet/framework/wpf/advanced/wpf-and-win32-interoperation#hwnds-inside-wpf)
+             See the <see cref="T:System.Windows.Interop.HwndHost"/> and [WPF/Win32 interop](/dotnet/framework/wpf/advanced/wpf-and-win32-interoperation#hwnds-inside-wpf)
              documentation for more information.
              </remarks>
              <seealso cref="T:System.Windows.Interop.HwndHost"/>
