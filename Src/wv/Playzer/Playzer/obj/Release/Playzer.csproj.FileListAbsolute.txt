@@ -187,6 +187,6 @@ C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\obj\Release\Playz
 C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\obj\Release\Playzer.Properties.Resources.resources
 C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\obj\Release\Playzer.csproj.GenerateResource.cache
 C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\obj\Release\Playzer.csproj.CoreCompileInputs.cache
-C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\obj\Release\Playzer.csproj.CopyComplete
 C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\obj\Release\Playzer.exe
 C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\obj\Release\Playzer.pdb
+C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\obj\Release\Playzer.csproj.Up2Date
