@@ -709,8 +709,16 @@ namespace Playzer
             }
             if (cutsound)
             {
-                for (int i = 0; i <= 100; i++)
+                if (!echoboostenable)
                 {
+                    for (int i = 0; i <= 100; i++)
+                    {
+                        VolUp();
+                    }
+                }
+                else
+                {
+                    VolDown();
                     VolUp();
                 }
             }
@@ -782,16 +790,29 @@ namespace Playzer
             if (Valuechange._ValueChange[0] > 0f)
             {
                 cutsound = true;
-                for (int i = 0; i <= 100; i++)
+                if (!echoboostenable)
                 {
-                    VolDown();
+                    for (int i = 0; i <= 100; i++)
+                    {
+                        VolDown();
+                    }
                 }
+                else
+                    Mute();
             }
             if (Valuechange._ValueChange[0] < 0f)
             {
                 cutsound = false;
-                for (int i = 0; i <= 100; i++)
+                if (!echoboostenable)
                 {
+                    for (int i = 0; i <= 100; i++)
+                    {
+                        VolUp();
+                    }
+                }
+                else
+                {
+                    VolDown();
                     VolUp();
                 }
             }
