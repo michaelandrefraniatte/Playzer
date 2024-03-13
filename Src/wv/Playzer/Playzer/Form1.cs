@@ -153,9 +153,10 @@ namespace Playzer
             webView21.NavigationCompleted += WebView21_NavigationCompleted;
             webView21.DefaultBackgroundColor = Color.Black;
             webView21.CoreWebView2.AddHostObjectToScript("bridge", new Bridge());
-            webView21.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
-            webView21.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
+            webView21.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
+            webView21.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
             webView21.KeyDown += WebView21_KeyDown;
+            webView21.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
             this.Controls.Add(webView21);
             using (StreamReader file = new StreamReader("colors.txt"))
             {
@@ -250,81 +251,6 @@ namespace Playzer
         {
             e.Handled = true;
             webView21.Source = new System.Uri(e.Uri);
-        }
-        private void CoreWebView2_ContextMenuRequested(object sender, CoreWebView2ContextMenuRequestedEventArgs e)
-        {
-            IList<CoreWebView2ContextMenuItem> menuList = e.MenuItems;
-            CoreWebView2ContextMenuItem newItem;
-            newItem = webView21.CoreWebView2.Environment.CreateContextMenuItem("Copy page Uri", null, CoreWebView2ContextMenuItemKind.Command);
-            newItem.CustomItemSelected += delegate (object send, Object ex)
-            {
-                string pageUri = e.ContextMenuTarget.PageUri;
-                System.Threading.SynchronizationContext.Current.Post((_) =>
-                {
-                    Clipboard.SetText(pageUri);
-                    System.Diagnostics.Process.Start(pageUri);
-                }, null);
-            };
-            menuList.Insert(menuList.Count, newItem);
-            newItem = webView21.CoreWebView2.Environment.CreateContextMenuItem("Go to menu", null, CoreWebView2ContextMenuItemKind.Command);
-            newItem.CustomItemSelected += delegate (object send, Object ex)
-            {
-                System.Threading.SynchronizationContext.Current.Post((_) =>
-                {
-                    using (StreamReader file = new StreamReader("playzer.txt"))
-                    {
-                        webView21.Source = new Uri(file.ReadLine());
-                    }
-                }, null);
-            };
-            menuList.Insert(menuList.Count, newItem);
-            newItem = webView21.CoreWebView2.Environment.CreateContextMenuItem("Go to Uri", null, CoreWebView2ContextMenuItemKind.Command);
-            newItem.CustomItemSelected += delegate (object send, Object ex)
-            {
-                string newpageUri = Microsoft.VisualBasic.Interaction.InputBox("Prompt", "Enter a new page Uri", "https://google.com", 0, 0);
-                System.Threading.SynchronizationContext.Current.Post((_) =>
-                {
-                    if (newpageUri != "")
-                        Navigate(newpageUri);
-                }, null);
-            };
-            menuList.Insert(menuList.Count, newItem);
-            newItem = webView21.CoreWebView2.Environment.CreateContextMenuItem("Back", null, CoreWebView2ContextMenuItemKind.Command);
-            newItem.CustomItemSelected += delegate (object send, Object ex)
-            {
-                System.Threading.SynchronizationContext.Current.Post((_) =>
-                {
-                    string stringinject = @"
-                        history.back();
-                    ".Replace("\r\n", " ");
-                    execScriptHelper(stringinject);
-                }, null);
-            };
-            menuList.Insert(menuList.Count, newItem);
-            newItem = webView21.CoreWebView2.Environment.CreateContextMenuItem("Forward", null, CoreWebView2ContextMenuItemKind.Command);
-            newItem.CustomItemSelected += delegate (object send, Object ex)
-            {
-                System.Threading.SynchronizationContext.Current.Post((_) =>
-                {
-                    string stringinject = @"
-                        history.forward();
-                    ".Replace("\r\n", " ");
-                    execScriptHelper(stringinject);
-                }, null);
-            };
-            menuList.Insert(menuList.Count, newItem);
-            newItem = webView21.CoreWebView2.Environment.CreateContextMenuItem("Reload", null, CoreWebView2ContextMenuItemKind.Command);
-            newItem.CustomItemSelected += delegate (object send, Object ex)
-            {
-                System.Threading.SynchronizationContext.Current.Post((_) =>
-                {
-                    string stringinject = @"
-                        window.location.reload(false);
-                    ".Replace("\r\n", " ");
-                    execScriptHelper(stringinject);
-                }, null);
-            };
-            menuList.Insert(menuList.Count, newItem);
         }
         private void Navigate(string address)
         {
@@ -471,98 +397,6 @@ namespace Playzer
                             ctx.stroke();
                         }
                         catch {}
-                        try {
-                            var elements = document.getElementsByClassName('ads');
-                            for (var i = 0; i < elements.length; i++) {
-                                elements[i].style.display = 'none';
-                            }
-                        }
-                        catch { }
-                        try {
-                            var els = document.getElementsByClassName('conversion-banner');
-                            for (var i = 0; i < els.length; i++) {
-                                els[i].style.display = 'none';
-                            }
-                        }
-                        catch { }
-                        try {
-                            var elts = document.querySelectorAll('.ads-top');
-                            for (var i = 0; i < elts.length; i++) {
-                                elts[i].style.display = 'none';
-                            }
-                        }
-                        catch { }
-                        try {
-                            var ets = document.querySelectorAll('.ads-bottom-alone');
-                            for (var i = 0; i < ets.length; i++) {
-                                ets[i].style.display = 'none';
-                            }
-                        }
-                        catch { }
-                        try {
-                            document.getElementById('modal-close').click();
-                        }
-                        catch { }
-                        try {
-                            document.getElementById('modal_push_premium').style.display = 'none';
-                        }
-                        catch { }
-                        try {
-                            var bts = document.querySelectorAll('button');
-                            for (var i = 0; i < bts.length; i++) {
-                                if (bts[i].ariaLabel == 'Close') {
-                                    bts[i].click();
-                                }
-                            }
-                        }
-                        catch { }
-                        try {
-                            var subs = document.querySelectorAll('.chakra-stack');
-                            for (var i = 0; i < subs.length; i++) {
-                                if (subs[i].dataset.testid == 'conversionBanner') {
-                                    subs[i].style.display = 'none';
-                                }
-                            }
-                        }
-                        catch { }
-                        try {
-                            var icons = document.querySelectorAll('.chakra-icon');
-                            for (var i = 0; i < icons.length; i++) {
-                                if (icons[i].dataset.testid == 'HeartMediumFilledIcon') {
-                                    icons[i].style.color = '#fdfcfe';
-                                    icons[i].parentElement.style.backgroundColor = '#a238ff';
-                                }
-                            }
-                        }
-                        catch { }
-                        try {
-                            const bridge = chrome.webview.hostObjects.bridge;
-                            var mute = document.getElementsByClassName('track-link');
-                            for (var i = 0; i < mute.length; i++) {
-                                var advertising = mute[i].innerText;
-                                if (advertising == 'Advertising' | advertising == 'En savoir plus') {
-                                    bridge.CutSound('1');
-                                }
-                                else {
-                                    bridge.CutSound('0');
-                                }
-                            }
-                        }
-                        catch { }
-                        try {
-                            const bridge = chrome.webview.hostObjects.bridge;
-                            var mute = document.querySelectorAll('.chakra-text a');
-                            for (var i = 0; i < mute.length; i++) {
-                                var advertising = mute[i].innerText;
-                                if (advertising == 'Advertising' | advertising == 'En savoir plus') {
-                                    bridge.CutSound('1');
-                                }
-                                else {
-                                    bridge.CutSound('0');
-                                }
-                            }
-                        }
-                        catch { }
                     ";
                     await execScriptHelper(stringinject.Replace("backgroundcolor", backgroundcolor).Replace("frequencystickscolor", frequencystickscolor).Replace("rawdata100", (int)barData[0] + ", " + (int)barData[1] + ", " + (int)barData[2] + ", " + (int)barData[3] + ", " + (int)barData[4] + ", " + (int)barData[5] + ", " + (int)barData[6] + ", " + (int)barData[7] + ", " + (int)barData[8] + ", " + (int)barData[9] + ", " + (int)barData[10] + ", " + (int)barData[11] + ", " + (int)barData[12] + ", " + (int)barData[13] + ", " + (int)barData[14] + ", " + (int)barData[15] + ", " + (int)barData[16] + ", " + (int)barData[17] + ", " + (int)barData[18] + ", " + (int)barData[19] + ", " + (int)barData[20] + ", " + (int)barData[21] + ", " + (int)barData[22] + ", " + (int)barData[23] + ", " + (int)barData[24] + ", " + (int)barData[25] + ", " + (int)barData[26] + ", " + (int)barData[27] + ", " + (int)barData[28] + ", " + (int)barData[29] + ", " + (int)barData[30] + ", " + (int)barData[31] + ", " + (int)barData[32] + ", " + (int)barData[33] + ", " + (int)barData[34] + ", " + (int)barData[35] + ", " + (int)barData[36] + ", " + (int)barData[37] + ", " + (int)barData[38] + ", " + (int)barData[39] + ", " + (int)barData[40] + ", " + (int)barData[41] + ", " + (int)barData[42] + ", " + (int)barData[43] + ", " + (int)barData[44] + ", " + (int)barData[45] + ", " + (int)barData[46] + ", " + (int)barData[47] + ", " + (int)barData[48] + ", " + (int)barData[49] + ", " + (int)barData[50] + ", " + (int)barData[51] + ", " + (int)barData[52] + ", " + (int)barData[53] + ", " + (int)barData[54] + ", " + (int)barData[55] + ", " + (int)barData[56] + ", " + (int)barData[57] + ", " + (int)barData[58] + ", " + (int)barData[59] + ", " + (int)barData[60] + ", " + (int)barData[61] + ", " + (int)barData[62] + ", " + (int)barData[63] + ", " + (int)barData[64] + ", " + (int)barData[65] + ", " + (int)barData[66] + ", " + (int)barData[67] + ", " + (int)barData[68] + ", " + (int)barData[69] + ", " + (int)barData[70] + ", " + (int)barData[71] + ", " + (int)barData[72] + ", " + (int)barData[73] + ", " + (int)barData[74] + ", " + (int)barData[75] + ", " + (int)barData[76] + ", " + (int)barData[77] + ", " + (int)barData[78] + ", " + (int)barData[79] + ", " + (int)barData[80] + ", " + (int)barData[81] + ", " + (int)barData[82] + ", " + (int)barData[83] + ", " + (int)barData[84] + ", " + (int)barData[85] + ", " + (int)barData[86] + ", " + (int)barData[87] + ", " + (int)barData[88] + ", " + (int)barData[89] + ", " + (int)barData[90] + ", " + (int)barData[91] + ", " + (int)barData[92] + ", " + (int)barData[93] + ", " + (int)barData[94] + ", " + (int)barData[95] + ", " + (int)barData[96] + ", " + (int)barData[97] + ", " + (int)barData[98] + ", " + (int)barData[99]));
                 }
