@@ -71,6 +71,9 @@
             <summary>
             WebView2 enables you to host web content using the latest Microsoft Edge browser and web technology.
             </summary>
+            <summary>
+            WebView2 enables you to host web content using the latest Microsoft Edge browser and web technology.
+            </summary>
         </member>
         <member name="M:Microsoft.Web.WebView2.Core.CoreWebView2.CreateFromComICoreWebView2(System.IntPtr)">
             <summary>
@@ -94,6 +97,22 @@
              The async PrintToPdf operation completes when the data has been written to the PDF file. If the application exits before printing is complete, the file is not saved. Only one `Printing` operation can be in progress at a time.
              If PrintToPdf is called while a `PrintToPdf` or `PrintToPdfStream` or `Print` operation is in progress, the operation completes and returns false.
              </remarks>
+        </member>
+        <member name="M:Microsoft.Web.WebView2.Core.CoreWebView2.AddWebResourceRequestedFilter(System.String,Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext,Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestSourceKinds)">
+            <summary>
+            Adds a URI and resource context filter for corresponding request sources for the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.WebResourceRequested"/> event.
+            </summary>
+            <param name="uri">A URI to be added to the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.WebResourceRequested"/> event.</param>
+            <param name="ResourceContext">A resource context filter to be added to the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.WebResourceRequested"/> event.</param>
+            <param name="RequestSourceKinds">A request source filter to be added to the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.WebResourceRequested"/> event.</param>
+        </member>
+        <member name="M:Microsoft.Web.WebView2.Core.CoreWebView2.RemoveWebResourceRequestedFilter(System.String,Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext,Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestSourceKinds)">
+            <summary>
+            Removes a matching WebResource filter that was previously added for the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.WebResourceRequested"/> event.
+            </summary>
+            <param name="uri">An URI to be added to the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.WebResourceRequested"/> event.</param>
+            <param name="ResourceContext">A resource context filter to be added to the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.WebResourceRequested"/> event.</param>
+            <param name="RequestSourceKinds">A request source filter to be added to the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.WebResourceRequested"/> event.</param>
         </member>
         <member name="M:Microsoft.Web.WebView2.Core.CoreWebView2.ShowPrintUI">
             <summary>
@@ -3159,7 +3178,7 @@
         </member>
         <member name="P:Microsoft.Web.WebView2.Core.CoreWebView2Frame.Name">
             <summary>
-            The name of the iframe from the iframe html tag declaring it.
+            The value of iframe's <c>window.name</c> property. The default value equals to iframe html tag declaring it.
             </summary>
         </member>
         <member name="E:Microsoft.Web.WebView2.Core.CoreWebView2Frame.NameChanged">
@@ -4050,6 +4069,34 @@
         </member>
         <member name="F:Microsoft.Web.WebView2.Core.Dispatchcontainerscriptbehavior.Ap">
             
+        </member>
+        <member name="T:Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestSourceKinds">
+            <summary>
+            Specifies the source of <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.WebResourceRequested"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestSourceKinds.None">
+            
+        </member>
+        <member name="F:Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestSourceKinds.Document">
+            <summary>
+            Indicates that web resource is requested from main page including dedicated workers and iframes.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestSourceKinds.SharedWorker">
+            <summary>
+            Indicates that web resource is requested from shared worker.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestSourceKinds.ServiceWorker">
+            <summary>
+            Indicates that web resource is requested from service worker.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestSourceKinds.All">
+            <summary>
+            Indicates that web resource is requested from any supported source.
+            </summary>
         </member>
         <member name="T:Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext">
             <summary>
@@ -5796,6 +5843,9 @@
             <summary>
             Event args for the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.WebResourceRequested"/> event.
             </summary>
+            <summary>
+            Event args for the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.WebResourceRequested"/> event.
+            </summary>
         </member>
         <member name="P:Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs.Request">
             <summary>
@@ -5826,6 +5876,11 @@
             <remarks>
             Use this to <see cref="M:Microsoft.Web.WebView2.Core.CoreWebView2Deferral.Complete"/> the event at a later time.
             </remarks>
+        </member>
+        <member name="P:Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs.RequestedSourceKind">
+            <summary>
+            Gets the source of web resource request.
+            </summary>
         </member>
         <member name="T:Microsoft.Web.WebView2.Core.CoreWebView2WebResourceRequest">
             <summary>
@@ -7270,10 +7325,10 @@
         </member>
         <member name="P:Microsoft.Web.WebView2.Core.CoreWebView2FrameInfo.Name">
             <summary>
-            Gets the name attribute of the frame, as in <c>&lt;iframe name="frame-name" ...&gt;</c>.
+            Gets the value of frame's <c>window.name</c> property. The default value equals to frame html tag declaring it, as in <c>&lt;iframe name="frame-name" ...&gt;</c>.
             </summary>
             <remarks>
-            The returned string is empty when the frame has no name attribute.
+            The returned string is empty when the frame has no name attribute and no assigned value for window.name.
             </remarks>
         </member>
         <member name="P:Microsoft.Web.WebView2.Core.CoreWebView2FrameInfo.Source">

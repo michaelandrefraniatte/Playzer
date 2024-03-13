@@ -168,6 +168,9 @@ C:\Users\micha\Documents\github\Playzer\Src\Playzer\Playzer\obj\Release\Playzer.
 C:\Users\micha\Documents\github\Playzer\Src\Playzer\Playzer\obj\Release\Playzer.pdb
 C:\Users\micha\Documents\github\Playzer\Src\Playzer\Playzer\bin\Release\Valuechanges.dll
 C:\Users\micha\Documents\github\Playzer\Src\Playzer\Playzer\bin\Release\Valuechanges.pdb
+C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\bin\Release\runtimes\win-x86\native\WebView2Loader.dll
+C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\bin\Release\runtimes\win-x64\native\WebView2Loader.dll
+C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\bin\Release\runtimes\win-arm64\native\WebView2Loader.dll
 C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\bin\Release\Playzer.exe.config
 C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\bin\Release\Playzer.exe
 C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\bin\Release\Playzer.pdb
@@ -187,6 +190,3 @@ C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\obj\Release\Playz
 C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\obj\Release\Playzer.exe
 C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\obj\Release\Playzer.pdb
 C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\obj\Release\Playzer.csproj.Up2Date
-C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\bin\Release\runtimes\win-x86\native\WebView2Loader.dll
-C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\bin\Release\runtimes\win-x64\native\WebView2Loader.dll
-C:\Users\micha\Documents\github\Playzer\Src\wv\Playzer\Playzer\bin\Release\runtimes\win-arm64\native\WebView2Loader.dll
