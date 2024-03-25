@@ -1460,7 +1460,7 @@
             If a setting on the <see cref="T:Microsoft.Web.WebView2.Core.CoreWebView2Settings"/> interface has been changed, navigating to an external URI scheme will trigger the <see cref="T:Microsoft.Web.WebView2.Core.CoreWebView2Settings"/> to update.
             
             The WebView2 may not display the default dialog based on user settings, browser settings, and whether the origin is determined as a [trustworthy origin](https://w3c.github.io/webappsec-secure-contexts#potentially-trustworthy-origin); however, the event will still be raised.
-            If the request is initiated by a cross-origin frame without a user gesture, the request will be blocked and the `LaunchingExternalUriScheme` event will not be raised.
+            If the request is initiated by a cross-origin frame without a user gesture, the request will be blocked and the `LaunchingExternalUriScheme` event will not be raised. A URI scheme may be blocked for safety reasons. In this case the `LaunchingExternalUriScheme` event will not be raised. The default dialog may show an "always allow" checkbox which allows the user to opt-in to relaxed security (i.e. skipping future default dialogs) for the combination of the URI scheme and the origin of the page initiating this external URI scheme launch. The checkbox is offered so long as the group policy to show the checkbox is not explicitly disabled and there is a trustworthy initiating origin. If the user has checked this box, future attempts to launch this URI scheme will still raise the event.
             </remarks>
             <example>
             :::code language="csharp" source="../code/sample/SampleApps/WebView2WpfBrowser/MainWindow.xaml.cs" id="LaunchingExternalUriScheme":::
@@ -4885,6 +4885,26 @@
             The setting and more button on PDF toolbar.
             </summary>
         </member>
+        <member name="T:Microsoft.Web.WebView2.Core.CoreWebView2NonClientRegionKind">
+            <summary>
+            Enum which represents the kind of non-client regions.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Web.WebView2.Core.CoreWebView2NonClientRegionKind.Nowhere">
+            <summary>
+            Enum value which represents a region entirely outside the WebView2 window.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Web.WebView2.Core.CoreWebView2NonClientRegionKind.Client">
+            <summary>
+            Enum value which represents the client area.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Web.WebView2.Core.CoreWebView2NonClientRegionKind.Caption">
+            <summary>
+            Enum value which represents the caption area.
+            </summary>
+        </member>
         <member name="T:Microsoft.Web.WebView2.Core.CoreWebView2NavigationKind">
             <summary>
             Specifies the navigation kind of each navigation.
@@ -5172,12 +5192,12 @@
         </member>
         <member name="F:Microsoft.Web.WebView2.Core.CoreWebView2FrameKind.Embed">
             <summary>
-            Indicates that the frame is an <see href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/embed">embed</see> element.
+            Indicates that the frame is an [embed](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/embed) element.
             </summary>
         </member>
         <member name="F:Microsoft.Web.WebView2.Core.CoreWebView2FrameKind.Object">
             <summary>
-            Indicates that the frame is an <see href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/object">object</see> element.
+            Indicates that the frame is an [object](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/object) element.
             </summary>
         </member>
         <member name="T:Microsoft.Web.WebView2.Core.CoreWebView2FaviconImageFormat">
@@ -5970,6 +5990,12 @@
             <remarks>
             Changes to <see cref="P:Microsoft.Web.WebView2.Core.CoreWebView2Settings.IsGeneralAutofillEnabled"/> and <see cref="P:Microsoft.Web.WebView2.Core.CoreWebView2Settings.IsPasswordAutosaveEnabled"/> will take effect immediately, while other setting changes made after <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.NavigationStarting"/> event do not apply until the next top-level navigation.
             </remarks>
+            <summary>
+            Defines properties that enable, disable, or modify WebView features.
+            </summary>
+            <remarks>
+            Changes to <see cref="P:Microsoft.Web.WebView2.Core.CoreWebView2Settings.IsGeneralAutofillEnabled"/> and <see cref="P:Microsoft.Web.WebView2.Core.CoreWebView2Settings.IsPasswordAutosaveEnabled"/> will take effect immediately, while other setting changes made after <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.NavigationStarting"/> event do not apply until the next top-level navigation.
+            </remarks>
         </member>
         <member name="P:Microsoft.Web.WebView2.Core.CoreWebView2Settings.IsScriptEnabled">
             <summary>
@@ -6052,7 +6078,7 @@
             Determines WebView2's User Agent.
             </summary>
             <remarks>
-            The default value is the default User Agent of the Edge browser. This property may be overridden if the User-Agent header is set in a request. If the parameter is empty the User Agent will not be updated and the current User Agent will remain.
+            The default value is the default User Agent of the Edge browser. This property may be overridden if the User-Agent header is set in a request. If the parameter is empty the User Agent will not be updated and the current User Agent will remain. Setting this property will cause the other user agent client hints Sec-CH-UA-* headers to be overridden and dropped.
             </remarks>
             <example>
             :::code language="csharp" source="../code/sample/SampleApps/WebView2WpfBrowser/MainWindow.xaml.cs" id="SetUserAgent":::
@@ -6202,6 +6228,11 @@
             SmartScreen of WebView2 apps can be controlled by Windows system setting "SmartScreen for Microsoft Edge", specially, for WebView2 in Windows Store apps, SmartScreen is controlled by another Windows system setting "SmartScreen for Microsoft Store apps". When the Windows setting is enabled, the SmartScreen operates under the control of the `IsReputationCheckingRequired`. When the Windows setting is disabled, the SmartScreen will be disabled regardless of the `IsReputationCheckingRequired` value set in WebView2 apps. In other words, under this circumstance the value of `IsReputationCheckingRequired` will be saved but overridden by system setting. Upon re-enabling the Windows setting, the CoreWebview2 will reference the `IsReputationCheckingRequired` to determine the SmartScreen status.
             </remarks>
         </member>
+        <member name="P:Microsoft.Web.WebView2.Core.CoreWebView2Settings.IsNonClientRegionSupportEnabled">
+            <summary>
+            Use this property to get/set if nonclient region support is enabled
+            </summary>
+        </member>
         <member name="T:Microsoft.Web.WebView2.Core.CoreWebView2ServerCertificateErrorDetectedEventArgs">
             <summary>
             Event args for the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.ServerCertificateErrorDetected"/> event.
@@ -6347,6 +6378,9 @@
             <summary>
             Event args for the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.ProcessFailed"/> event.
             </summary>
+            <summary>
+            Event args for the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2.ProcessFailed"/> event.
+            </summary>
         </member>
         <member name="P:Microsoft.Web.WebView2.Core.CoreWebView2ProcessFailedEventArgs.ProcessFailedKind">
             <summary>
@@ -6412,6 +6446,12 @@
             The content in these frames is replaced with an error page.
             This is only available when <see cref="P:Microsoft.Web.WebView2.Core.CoreWebView2ProcessFailedEventArgs.ProcessFailedKind"/> is <see cref="F:Microsoft.Web.WebView2.Core.CoreWebView2ProcessFailedKind.FrameRenderProcessExited"/>; the returned collection is empty for all other process failure kinds, including the case in which the failed process was the renderer for the main frame and subframes within it, for which the failure kind is <see cref="F:Microsoft.Web.WebView2.Core.CoreWebView2ProcessFailedKind.RenderProcessExited"/>.
             </remarks>
+        </member>
+        <member name="P:Microsoft.Web.WebView2.Core.CoreWebView2ProcessFailedEventArgs.FailureSourceModulePath">
+            <summary>
+            When ProcessFailed occurred due to a failed Code Integrity check, this property returns the full path of the file that was prevented from loading on the system.
+            </summary>
+            The webview2 process which tried to load the DLL will fail with exit code STATUS_INVALID_IMAGE_HASH(-1073740760).
         </member>
         <member name="T:Microsoft.Web.WebView2.Core.CoreWebView2ProcessExtendedInfo">
             <summary>
@@ -7047,6 +7087,16 @@
             <remarks>
             The permission state set from the <c>PermissionRequested</c>  event is saved in the profile by default; it is persisted across sessions and becomes the new default behavior for future <c>PermissionRequested</c>  events. Browser heuristics can affect whether the event continues to be raised when the state is persisted.
             </remarks>
+        </member>
+        <member name="T:Microsoft.Web.WebView2.Core.CoreWebView2NonClientRegionChangedEventArgs">
+            <summary>
+            Event args for the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2CompositionController.NonClientRegionChanged"/> event.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.WebView2.Core.CoreWebView2NonClientRegionChangedEventArgs.RegionKind">
+            <summary>
+            Gets the region kind <see cref="T:Microsoft.Web.WebView2.Core.CoreWebView2NonClientRegionKind" /> corresponding to the event.
+            </summary>
         </member>
         <member name="T:Microsoft.Web.WebView2.Core.CoreWebView2NewWindowRequestedEventArgs">
             <summary>
@@ -7729,6 +7779,9 @@
             <summary>
             This class is an extension of the <see cref="T:Microsoft.Web.WebView2.Core.CoreWebView2Controller"/> class to support visual hosting.
             </summary>
+            <summary>
+            This class is an extension of the <see cref="T:Microsoft.Web.WebView2.Core.CoreWebView2Controller"/> class to support visual hosting.
+            </summary>
         </member>
         <member name="P:Microsoft.Web.WebView2.Core.CoreWebView2CompositionController.RootVisualTarget">
             <summary>
@@ -7790,6 +7843,28 @@
             </summary>
             <remarks>
             Corresponds to the [ICoreDropOperationTarget.LeaveAsync](/uwp/api/windows.applicationmodel.datatransfer.dragdrop.core.icoredropoperationtarget.leaveasync) method when performing a drag operation into the WebView.
+            </remarks>
+        </member>
+        <member name="E:Microsoft.Web.WebView2.Core.CoreWebView2CompositionController.NonClientRegionChanged">
+            <summary>
+            This event is raised when elements on the page with "app-region" CSS property values corresponding to non-client regions change. Use the <see cref="P:Microsoft.Web.WebView2.Core.CoreWebView2NonClientRegionChangedEventArgs.RegionKind" /> to see the kind of non-client region that changed.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Web.WebView2.Core.CoreWebView2CompositionController.GetNonClientRegionAtPoint(System.Drawing.Point)">
+            <summary>
+            Call this method to perform hit-testing inside of your message loop when the message is WM_NCHITTEST.
+            </summary>
+            <param name="point">The point parameter is expected to be in the client coordinate space of the WebView2.</param>
+            <returns>The type of <see cref="T:Microsoft.Web.WebView2.Core.CoreWebView2NonClientRegionKind"/> region which contains the point.</returns>
+        </member>
+        <member name="M:Microsoft.Web.WebView2.Core.CoreWebView2CompositionController.QueryNonClientRegion(Microsoft.Web.WebView2.Core.CoreWebView2NonClientRegionKind)">
+            <summary>
+            This method retrieves the non-client regions on the page which corresponds to a given kind <see cref="T:Microsoft.Web.WebView2.Core.CoreWebView2NonClientRegionKind" />.
+            </summary>
+            <param name="Kind">The kind of non-client region.</param>
+            <returns>This method returns a vector of rectangles.</returns>
+            <remarks>
+            This method can be used inside the <see cref="E:Microsoft.Web.WebView2.Core.CoreWebView2CompositionController.NonClientRegionChanged"/> event handler to get the list of rects for the specific region that changed.
             </remarks>
         </member>
         <member name="T:Microsoft.Web.WebView2.Core.CoreWebView2ClientCertificateRequestedEventArgs">
